@@ -1,6 +1,7 @@
 from njupass import NjuUiaAuth
 import time
 import datetime
+from fake_useragent import UserAgent
 from pytz import timezone
 from urllib.parse import urlencode
 
@@ -23,15 +24,15 @@ def apply(curr_location, logger, auth: NjuUiaAuth, covidTestMethod='YESTERDAY', 
     :param `covidTestMethod`: 最近核酸时间的方案
     :param `force`: 是否在今日已经打卡的前提下强制打卡
     """
-
+    ua = UserAgent()
     headers = {
         # required since 2022/4/20
         'referer': 'http://ehallapp.nju.edu.cn/xgfw/sys/mrjkdkappnju/index.html',
-        "X-Requested-With": "com.wisedu.cpdaily.nju",
-        "User-Agent": "Mozilla/5.0 (Linux; Android 11; M2006J10C Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/92.0.4515.131 Mobile Safari/537.36 cpdaily/8.2.7 wisedu/8.2.7",
+        "X-Requested-With": ua.random + "com.wisedu.cpdaily.nju",
+        "User-Agent": "cpdaily/9.0.15 wisedu/9.0.5",
         "Host": "ehallapp.nju.edu.cn",
     }
-    for _ in range(10):
+    for _ in range(5):
         logger.info('尝试获取打卡列表信息...')
 
         auth.session.get(URL_JKDK_INDEX)
@@ -45,6 +46,10 @@ def apply(curr_location, logger, auth: NjuUiaAuth, covidTestMethod='YESTERDAY', 
 
         has_applied = dk_info['TBZT'] == "1"
         wid = dk_info['WID']
+
+        if wid == "1231212123":
+            logger.warning("Fake List, Trying again..")
+            continue
         param = {
             'WID': wid,
             'IS_TWZC': 1,  # 是否体温正常
