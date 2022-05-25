@@ -28,7 +28,7 @@ def apply(curr_location, logger, auth: NjuUiaAuth, covidTestMethod='YESTERDAY', 
     headers = {
         # required since 2022/4/20
         'referer': 'http://ehallapp.nju.edu.cn/xgfw/sys/mrjkdkappnju/index.html',
-        "X-Requested-With": ua.random + "com.wisedu.cpdaily.nju",
+        "X-Requested-With": 'Mozilla/5.0 (Linux; Android 11; SM-G9730) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Mobile Safari/537.36 EdgA/101.0.1210.53' + "com.wisedu.cpdaily.nju",
         "User-Agent": "cpdaily/9.0.15 wisedu/9.0.5",
         "Host": "ehallapp.nju.edu.cn",
     }
