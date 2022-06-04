@@ -3,3 +3,4 @@ PyExecJS
 python-dotenv
 pytz
 ddddocr
+fake-useragent
